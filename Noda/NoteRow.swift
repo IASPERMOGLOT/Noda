@@ -12,9 +12,11 @@ struct NoteRow: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
+                // характеристики заголовка из класса Note
                 Text(note.title)
                     .font(.system(size: 22, weight: .bold, design: .rounded))
                 Spacer()
+                // характеристики иконки
                 Image(systemName: "text.page")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -23,13 +25,15 @@ struct NoteRow: View {
                     .shadow(color: Color.indigo ,radius: 0.5)
             }
             .padding()
-            Text(note.description)
+            // характеристики описания из класса Note
+            Text(note.content)
                 .lineLimit(1)
                 .padding(.horizontal)
                 .padding(.bottom)
                 
         }
         .frame(maxWidth: .infinity)
+        // Обводка заметки
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
@@ -40,6 +44,7 @@ struct NoteRow: View {
 }
 
 #Preview {
+    // тестовое представление
     NoteRow(note: Note(title: "test title", description: "test description", createAt: Date()))
 }
 

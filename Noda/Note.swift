@@ -1,27 +1,26 @@
-//
-//  Note.swift
-//  Noda
-//
-//  Created by Александр on 03.10.2025.
-//
-
 import Foundation
+import SwiftData
 
+@Model
 class Note: Identifiable {
-    var id = UUID()
+    var id: UUID
     var title: String
-    var description: String
+    var content: String
     var createdAt: Date
     
-    init(id: UUID = UUID(), title: String, description: String, createAt:Date) {
+    init(id: UUID = UUID(), title: String, description: String, createAt: Date) {
         self.id = id
         self.title = title
-        self.description = description
+        self.content = description
         self.createdAt = createAt
     }
 }
 
+
+// FIXME: удалить после тестов
 extension Note {
+    static var emptyList: [Note] { [] }
+    
     static var mockData: [Note] {
         [
             Note(title: "First note", description: "Description for first note", createAt: Date()),
