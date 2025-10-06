@@ -47,9 +47,9 @@ struct NoteSheet: View {
                     }
                     .frame(width: 99)
                     .foregroundColor(Color.white)
+                    .shadow(color: .gray, radius: 3)
                     .background(Color.red)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .shadow(color: .gray, radius: 3)
                 }
                 //кнопка сохранения
                 ToolbarItem(placement: .topBarTrailing) {
@@ -60,10 +60,10 @@ struct NoteSheet: View {
                     }
                     .frame(width: 99)
                     .foregroundColor(Color.white)
-                    .background(Color.green)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
                     .shadow(color: .gray, radius: 3)
                     .disabled(note.title.isEmpty) // отключаем если заголовок пустой
+                    .background(Color.green)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
             }
         }
