@@ -3,6 +3,7 @@ import SwiftData
 
 struct ContentView: View {
     @State private var isShowingSheet = false
+    @State private var selectedNote: Note = Note(title: "", description: "")
     @Query(sort: \Note.createdAt) var swiftDataNotes: [Note] // сортировка по дате создания
     
     var body: some View {
@@ -52,10 +53,14 @@ struct ContentView: View {
                                 .foregroundColor(.white)
                         )
                     
-                    // заполнение заметками - показываем только если есть заметки
+                    // заполнение заметками - показываем только если они есть
                     if !swiftDataNotes.isEmpty {
                         ForEach(swiftDataNotes) { note in
                             NoteRow(note: note)
+                                .onTapGesture {
+                                    selectedNote = note
+                                    isShowingSheet = true
+                                }
                         }
                     }
                 }
@@ -63,7 +68,7 @@ struct ContentView: View {
             .background(Color.gray.opacity(0.15))
             //нажание на кнопку => показ листа
             .sheet(isPresented: $isShowingSheet) {
-                NoteSheet()
+                NoteSheet(note: selectedNote)
                     .presentationDetents([.fraction(0.7), .large])
             }
             

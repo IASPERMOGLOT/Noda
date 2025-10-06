@@ -2,17 +2,19 @@ import SwiftUI
 import SwiftData
 
 struct NoteSheet: View {
-    @State private var title = ""
-    @State private var description = ""
+//    @State private var title = ""
+//    @State private var description = ""
+    @Bindable var note: Note
     @FocusState private var isDescriptionFocus: Bool
     @Environment(\.modelContext) var context
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         // текстовые поля
         NavigationStack {
             VStack {
                 // заголовок в листе заметки
-                TextField("Title", text: $title)
+                TextField("Title", text: $note.title)
                     .font(.headline)
                     .padding()
                 // разделяющая линия
@@ -21,12 +23,12 @@ struct NoteSheet: View {
                 
                 // создание автозаполнения для описания
                 ZStack(alignment: .topLeading) {
-                    TextEditor(text: $description)
+                    TextEditor(text: $note.content)
                     //реагирует на нажание по описанию
                         .focused($isDescriptionFocus)
                         .padding(.horizontal)
                     
-                    if !isDescriptionFocus && description.isEmpty {
+                    if !isDescriptionFocus && note.content.isEmpty {
                         Text("Description")
                             .font(.headline)
                             .foregroundColor(Color.black.opacity(0.219))
@@ -40,7 +42,9 @@ struct NoteSheet: View {
             .toolbar {
                 //кнопка отмены
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {}
+                    Button("Cancel") {
+                        dismiss()
+                    }
                     .frame(width: 99)
                     .foregroundColor(Color.white)
                     .background(Color.red)
@@ -50,19 +54,16 @@ struct NoteSheet: View {
                 //кнопка сохранения
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
-                        let newNote = Note(
-                            title: title,
-                            description: description,
-                            createAt: Date.now
-                        )
-                        context.insert(newNote)
+                        context.insert(note)
+                        // скрыть лист при создании заметки
+                        dismiss()
                     }
                     .frame(width: 99)
                     .foregroundColor(Color.white)
                     .background(Color.green)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .shadow(color: .gray, radius: 3)
-                    .disabled(title.isEmpty) // отключаем если заголовок пустой
+                    .disabled(note.title.isEmpty) // отключаем если заголовок пустой
                 }
             }
         }
@@ -70,6 +71,6 @@ struct NoteSheet: View {
 }
 
 #Preview {
-    NoteSheet()
+    NoteSheet(note: Note(title: "", description: "", createAt: Date.now))
         .modelContainer(for: Note.self)
 }

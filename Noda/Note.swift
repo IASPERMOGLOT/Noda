@@ -8,7 +8,7 @@ class Note: Identifiable {
     var content: String
     var createdAt: Date
     
-    init(id: UUID = UUID(), title: String, description: String, createAt: Date) {
+    init(id: UUID = UUID(), title: String, description: String, createAt: Date = Date()) {
         self.id = id
         self.title = title
         self.content = description
