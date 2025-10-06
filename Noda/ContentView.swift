@@ -4,6 +4,7 @@ import SwiftData
 struct ContentView: View {
     @State private var isShowingSheet = false
     @State private var selectedNote: Note = Note(title: "", description: "")
+    @Environment(\.modelContext) var context
     @Query(sort: \Note.createdAt) var swiftDataNotes: [Note] // сортировка по дате создания
     
     var body: some View {
@@ -60,6 +61,15 @@ struct ContentView: View {
                                 .onTapGesture {
                                     selectedNote = note
                                     isShowingSheet = true
+                                }
+                            // контекстное меню для удаления заметки
+                                .contextMenu {
+                                    Button(action: {
+                                        context.delete(note)
+                                    }) {
+                                        Text("Delete")
+                                        Image(systemName: "trash")
+                                    }
                                 }
                         }
                     }
